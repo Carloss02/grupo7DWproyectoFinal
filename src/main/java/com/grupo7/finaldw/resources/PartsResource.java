@@ -61,6 +61,7 @@ public class PartsResource {
         return new Representation<Part>(HttpStatus.OK_200, partsService.createPart(part));
     }
 
+    /*
     @PUT
     @Timed
     @Path("{id}")
@@ -68,6 +69,14 @@ public class PartsResource {
             @PathParam("id") final int id) {
         part.setId(id);
         return new Representation<Part>(HttpStatus.OK_200, (Part) partsService.editPart((Part) (javax.servlet.http.Part) part));
+    } */
+    @PUT
+    @Timed
+    @Path("{id}")
+    public Representation<Part> editPart(@NotNull @Valid final Part part,
+            @PathParam("id") final int id) {
+        part.setId(id);
+        return new Representation<Part>(HttpStatus.OK_200, partsService.editPart(part));
     }
 
     @DELETE

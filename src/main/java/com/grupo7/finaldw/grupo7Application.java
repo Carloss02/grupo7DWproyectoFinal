@@ -1,27 +1,26 @@
 package com.grupo7.finaldw;
 
-import com.grupo7.finaldw.auth.DropwizardBlogAuthenticator;
-import com.grupo7.finaldw.auth.DropwizardBlogAuthorizer;
-import com.grupo7.finaldw.auth.User;
 import com.grupo7.finaldw.health.DropwizardBlogApplicationHealthCheck;
+import com.grupo7.finaldw.health.VuelosServiceHealthCheck;
 import com.grupo7.finaldw.resources.PartsResource;
+import com.grupo7.finaldw.resources.VuelosResource;
 import com.grupo7.finaldw.services.PartsService;
+import com.grupo7.finaldw.services.VuelosService;
 import io.dropwizard.Application;
-import io.dropwizard.auth.AuthDynamicFeature;
-import io.dropwizard.auth.oauth.OAuthCredentialAuthFilter;
 import io.dropwizard.setup.Environment;
 
 import javax.sql.DataSource;
 
-import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.skife.jdbi.v2.DBI;
 
 
 public class grupo7Application extends Application<grupo7Configuration> {
 
     PartsResource i;
+    VuelosResource j;
     private static final String SQL = "sql";
     private static final String DROPWIZARD_BLOG_SERVICE = "Dropwizard blog service";
+    private static final String DROPWIZARD_VUELOS_SERVICE = "Dropwizard Vuelos service";
     private static final String BEARER = "Bearer";
 
     public static void main(final String[] args) throws Exception {
@@ -40,6 +39,10 @@ public class grupo7Application extends Application<grupo7Configuration> {
         DropwizardBlogApplicationHealthCheck healthCheck
                 = new DropwizardBlogApplicationHealthCheck(dbi.onDemand(PartsService.class));
         environment.healthChecks().register(DROPWIZARD_BLOG_SERVICE, healthCheck);
+        // Register Health Check
+        VuelosServiceHealthCheck healthCheckVuelos
+                = new VuelosServiceHealthCheck(dbi.onDemand(VuelosService.class));
+        environment.healthChecks().register(DROPWIZARD_VUELOS_SERVICE, healthCheckVuelos);
 
         // Register OAuth authentication
         /*
@@ -52,6 +55,7 @@ public class grupo7Application extends Application<grupo7Configuration> {
 
         // Register resources
         environment.jersey().register(new PartsResource(dbi.onDemand(PartsService.class)));
+        environment.jersey().register(new VuelosResource(dbi.onDemand(VuelosService.class)));
     }
 }
 

@@ -2,7 +2,7 @@ database:
  driverClass: com.mysql.cj.jdbc.Driver
  url: jdbc:mysql://localhost:3306/grupo7
  user: root
- password: Umg$2019 
+ password: 
  maxWaitForConnection: 1s
  validationQuery: "SELECT 1"
  validationQueryTimeout: 3s
